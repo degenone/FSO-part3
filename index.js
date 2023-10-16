@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 
 let persons = [
@@ -38,6 +39,7 @@ const PORT = 3001;
 const generateId = () => Math.floor(Math.random() * 10_000);
 
 app.use(express.json());
+app.use(morgan('tiny'));
 
 app.get('/', (req, res) => res.send('<h1>Hello from the Phonebook!</h1>'));
 
@@ -67,6 +69,7 @@ app.get('/api/persons/:id', (req, res) => {
     if (isNaN(id)) {
         res.statusMessage = 'Id must be a number.';
         res.status(400).end();
+        return;
     }
 
     const person = persons.find((p) => p.id === id);
@@ -83,11 +86,13 @@ app.delete('/api/persons/:id', (req, res) => {
     if (isNaN(id)) {
         res.statusMessage = 'Id must be a number.';
         res.status(400).end();
+        return;
     }
 
     if (persons.find((p) => p.id === id) === undefined) {
         res.statusMessage = `Can not delete. Person with id: ${id} does not exist.`;
         res.status(404).end();
+        return;
     }
 
     persons = persons.filter((p) => p.id !== id);
@@ -100,11 +105,13 @@ app.post('/api/persons', (req, res) => {
         res.status(400).json({
             error: "Missing attribute 'name'.",
         });
+        return;
     }
     if (!body.number) {
         res.status(400).json({
             error: "Missing attribute 'number'.",
         });
+        return;
     }
 
     const person = {
@@ -118,11 +125,13 @@ app.post('/api/persons', (req, res) => {
         res.status(400).json({
             error: 'Name attribute must be unique.',
         });
+        return;
     }
     if (persons.find((p) => p.number === person.number)) {
         res.status(400).json({
             error: 'Number attribute must be unique.',
         });
+        return;
     }
 
     persons = [...persons, person];
