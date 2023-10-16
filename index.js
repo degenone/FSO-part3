@@ -39,7 +39,11 @@ const PORT = 3001;
 const generateId = () => Math.floor(Math.random() * 10_000);
 
 app.use(express.json());
-app.use(morgan('tiny'));
+morgan.token('body', (req, res) => {
+    const body = JSON.stringify(req.body);
+    return body !== '{}' ? body : '-'
+});
+app.use(morgan(':method :url :status - :response-time ms :body'));
 
 app.get('/', (req, res) => res.send('<h1>Hello from the Phonebook!</h1>'));
 
