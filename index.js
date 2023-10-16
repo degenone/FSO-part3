@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const persons = [
+let persons = [
     {
         name: 'Arto Hellas',
         number: '040-123-456',
@@ -72,6 +72,22 @@ app.get('/api/persons/:id', (req, res) => {
         res.statusMessage = `Person with id: ${id} was not found.`;
         res.status(404).end();
     }
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        res.statusMessage = 'Id must be a number.';
+        res.status(400).end();
+    }
+
+    if (persons.find((p) => p.id === id) === undefined) {
+        res.statusMessage = `Can not delete. Person with id: ${id} does not exist.`;
+        res.status(404).end();
+    }
+
+    persons = persons.filter((p) => p.id !== id);
+    res.status(204).end();
 });
 
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
