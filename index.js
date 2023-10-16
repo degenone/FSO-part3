@@ -95,8 +95,36 @@ app.delete('/api/persons/:id', (req, res) => {
 });
 
 app.post('/api/persons', (req, res) => {
-    const person = req.body;
-    person.id = generateId();
+    const body = req.body;
+    if (!body.name) {
+        res.status(400).json({
+            error: "Missing attribute 'name'.",
+        });
+    }
+    if (!body.number) {
+        res.status(400).json({
+            error: "Missing attribute 'number'.",
+        });
+    }
+
+    const person = {
+        id: generateId(),
+        name: body.name,
+        number: body.number,
+    };
+    if (
+        persons.find((p) => p.name.toLowerCase() === person.name.toLowerCase())
+    ) {
+        res.status(400).json({
+            error: 'Name attribute must be unique.',
+        });
+    }
+    if (persons.find((p) => p.number === person.number)) {
+        res.status(400).json({
+            error: 'Number attribute must be unique.',
+        });
+    }
+
     persons = [...persons, person];
     res.json(person);
 });
