@@ -58,4 +58,20 @@ app.get('/api/persons', (req, res) => {
     res.json(persons);
 });
 
+app.get('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+        res.statusMessage = 'Id must be a number.';
+        res.status(400).end();
+    }
+
+    const person = persons.find((p) => p.id === id);
+    if (person !== undefined) {
+        res.json(person);
+    } else {
+        res.statusMessage = `Person with id: ${id} was not found.`;
+        res.status(404).end();
+    }
+});
+
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
