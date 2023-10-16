@@ -37,6 +37,23 @@ const PORT = 3001;
 
 app.get('/', (req, res) => res.send('<h1>Hello from the Phonebook!</h1>'));
 
+app.get('/info', (req, res) => {
+    const options = {
+        second: 'numeric',
+        minute: 'numeric',
+        hour: 'numeric',
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    };
+    res.send(
+        `<p>Phonebook has info for ${persons.length} ${
+            persons.length === 1 ? 'person' : 'people'
+        }</p><p>${new Date().toLocaleString('fi-FI', options)}</p>`
+    );
+});
+
 app.get('/api/persons', (req, res) => {
     res.json(persons);
 });
