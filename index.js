@@ -40,6 +40,7 @@ const PORT = process.env.PORT || 3001;
 const generateId = () => Math.floor(Math.random() * 10_000);
 
 app.use(express.json());
+app.use(express.static('dist'));
 app.use(cors());
 morgan.token('body', (req, res) => {
     const body = JSON.stringify(req.body);
