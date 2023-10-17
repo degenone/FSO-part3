@@ -1,43 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+require('dotenv').config();
+const Person = require('./models/person');
 const app = express();
 
-let persons = [
-    {
-        name: 'Arto Hellas',
-        number: '040-123-456',
-        id: 1,
-    },
-    {
-        name: 'Ada Lovelace',
-        number: '394 453 2523',
-        id: 2,
-    },
-    {
-        name: 'Dan Abramov',
-        number: '124-323-4345',
-        id: 3,
-    },
-    {
-        name: 'Mary Poppendieck',
-        number: '392 364 2122',
-        id: 4,
-    },
-    {
-        name: 'Tero Kilpeläinen',
-        number: '040 987 6543',
-        id: 5,
-    },
-    {
-        name: 'Matti Meikeläinen',
-        number: '349 925 2341',
-        id: 6,
-    },
-];
 const PORT = process.env.PORT || 3001;
-
-const generateId = () => Math.floor(Math.random() * 10_000);
 
 app.use(express.json());
 app.use(express.static('dist'));
@@ -66,7 +34,7 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    Person.find({}).then((persons) => res.json(persons));
 });
 
 app.get('/api/persons/:id', (req, res) => {
