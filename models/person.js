@@ -20,7 +20,7 @@ personSchema.set('toJSON', {
         returnObj.id = returnObj._id;
         delete returnObj._id;
         delete returnObj.__v;
-    }
-})
+    },
+});
 
 module.exports = mongoose.model('Person', personSchema);
