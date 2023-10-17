@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const app = express();
 
 let persons = [
@@ -39,9 +40,10 @@ const PORT = 3001;
 const generateId = () => Math.floor(Math.random() * 10_000);
 
 app.use(express.json());
+app.use(cors());
 morgan.token('body', (req, res) => {
     const body = JSON.stringify(req.body);
-    return body !== '{}' ? body : '-'
+    return body !== '{}' ? body : '-';
 });
 app.use(morgan(':method :url :status - :response-time ms :body'));
 
