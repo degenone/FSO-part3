@@ -35,7 +35,7 @@ let persons = [
         id: 6,
     },
 ];
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const generateId = () => Math.floor(Math.random() * 10_000);
 
@@ -144,4 +144,4 @@ app.post('/api/persons', (req, res) => {
     res.json(person);
 });
 
-app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
