@@ -48,8 +48,6 @@ morgan.token('body', (req, res) => {
 });
 app.use(morgan(':method :url :status - :response-time ms :body'));
 
-app.get('/', (req, res) => res.send('<h1>Hello from the Phonebook!</h1>'));
-
 app.get('/info', (req, res) => {
     const options = {
         second: 'numeric',
