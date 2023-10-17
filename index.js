@@ -87,28 +87,11 @@ app.post('/api/persons', (req, res) => {
         return;
     }
 
-    const person = {
-        id: generateId(),
+    const person = new Person({
         name: body.name,
         number: body.number,
-    };
-    if (
-        persons.find((p) => p.name.toLowerCase() === person.name.toLowerCase())
-    ) {
-        res.status(400).json({
-            error: 'Name attribute must be unique.',
-        });
-        return;
-    }
-    if (persons.find((p) => p.number === person.number)) {
-        res.status(400).json({
-            error: 'Number attribute must be unique.',
-        });
-        return;
-    }
-
-    persons = [...persons, person];
-    res.json(person);
+    });
+    person.save().then((newPerson) => res.json(newPerson));
 });
 
 app.listen(PORT, () => console.log(`listening on port: ${PORT}`));
