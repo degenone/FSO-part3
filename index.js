@@ -100,6 +100,17 @@ app.post('/api/persons', (req, res, next) => {
         .catch((e) => next(e));
 });
 
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body;
+    const person = {
+        name: body.name,
+        number: body.number,
+    };
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+        .then((updatedPerson) => res.json(updatedPerson))
+        .catch((e) => next(e));
+});
+
 // usings
 app.use(unknownEndpoint);
 app.use(errorHandler);

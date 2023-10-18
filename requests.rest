@@ -13,6 +13,14 @@ Content-Type: application/json
     "number": "040 033 4124"
 }
 ###
+PUT http://localhost:3001/api/persons/652fca54882ec97dd8f41e7b HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Janne Jokunen",
+    "number": "024 301 4004"
+}
+###
 GET https://phonebook-fso-degenone.onrender.com/api/persons/ HTTP/1.1
 ###
 GET https://phonebook-fso-degenone.onrender.com/api/persons/1 HTTP/1.1
@@ -26,3 +34,12 @@ Content-Type: application/json
     "name": "Janne Jokunen",
     "number": "020 833 4646"
 }
+###
+PUT https://phonebook-fso-degenone.onrender.com/api/persons/652fca54882ec97dd8f41e7b HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Janne Jokunen",
+    "number": "024 301 4004"
+}
+
