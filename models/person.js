@@ -9,7 +9,7 @@ console.log('connecting...');
 
 mongoose
     .connect(URL)
-    .then((res) => console.log('Connected to mongoDB.'))
+    .then(() => console.log('Connected to mongoDB.'))
     .catch((e) => console.log('[ERR] mongoDB connection failed', e.message));
 
 const personSchema = new mongoose.Schema({
@@ -17,7 +17,7 @@ const personSchema = new mongoose.Schema({
         type: String,
         minLength: [
             3,
-            "'{VALUE}' is too short. Valid name must be at least 3 chacaters.",
+            '"{VALUE}" is too short. Valid name must be at least 3 chacaters.',
         ],
         required: true,
     },
@@ -25,7 +25,7 @@ const personSchema = new mongoose.Schema({
         type: String,
         minLength: [
             12,
-            "'{VALUE}' is too short. Valid number must be at least 12 chacaters.",
+            '"{VALUE}" is too short. Valid number must be at least 12 chacaters.',
         ],
         validate: {
             validator: (v) => NUMBER_RE.test(v),

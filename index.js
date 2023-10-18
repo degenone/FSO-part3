@@ -6,7 +6,7 @@ const Person = require('./models/person');
 const app = express();
 
 // middleware
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
     const body = JSON.stringify(req.body);
     return body !== '{}' ? body : '-';
 });
@@ -68,7 +68,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
-        .then((qr) => res.status(204).end())
+        .then(() => res.status(204).end())
         .catch((e) => next(e));
 });
 
