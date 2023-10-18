@@ -55,21 +55,9 @@ app.get('/api/persons/:id', (req, res) => {
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    if (isNaN(id)) {
-        res.statusMessage = 'Id must be a number.';
-        res.status(400).end();
-        return;
-    }
-
-    if (persons.find((p) => p.id === id) === undefined) {
-        res.statusMessage = `Can not delete. Person with id: ${id} does not exist.`;
-        res.status(404).end();
-        return;
-    }
-
-    persons = persons.filter((p) => p.id !== id);
-    res.status(204).end();
+    Person.findByIdAndRemove(req.params.id)
+        .then((qr) => res.status(204).end())
+        .catch((e) => res.status(400).send({ error: e.message }));
 });
 
 app.post('/api/persons', (req, res) => {
