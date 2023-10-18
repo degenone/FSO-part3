@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(morgan(':method :url :status - :response-time ms :body'));
 
 // routes
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
     const options = {
         second: 'numeric',
         minute: 'numeric',
@@ -41,11 +41,13 @@ app.get('/info', (req, res) => {
         month: 'long',
         year: 'numeric',
     };
-    res.send(
-        `<p>Phonebook has info for ${persons.length} ${
-            persons.length === 1 ? 'person' : 'people'
-        }</p><p>${new Date().toLocaleString('fi-FI', options)}</p>`
-    );
+    Person.find({})
+        .then((persons) => res.send(
+            `<p>Phonebook has info for ${persons.length} ${
+                persons.length === 1 ? 'person' : 'people'
+            }</p><p>${new Date().toLocaleString('fi-FI', options)}</p>`
+        ))
+        .catch((e) => next(e));
 });
 
 app.get('/api/persons', (req, res, next) => {
@@ -54,21 +56,10 @@ app.get('/api/persons', (req, res, next) => {
         .catch((e) => next(e));
 });
 
-app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    if (isNaN(id)) {
-        res.statusMessage = 'Id must be a number.';
-        res.status(400).end();
-        return;
-    }
-
-    const person = persons.find((p) => p.id === id);
-    if (person !== undefined) {
-        res.json(person);
-    } else {
-        res.statusMessage = `Person with id: ${id} was not found.`;
-        res.status(404).end();
-    }
+app.get('/api/persons/:id', (req, res, next) => {
+    Person.findById(req.params.id)
+        .then((person) => res.json(person))
+        .catch((e) => next(e));
 });
 
 app.delete('/api/persons/:id', (req, res, next) => {
